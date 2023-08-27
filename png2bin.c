@@ -34,7 +34,7 @@
 #include "common_options.h"
 
 static void do_work(const options_t *options, void *data, size_t filesize) {
-	uint8_t *buffer;
+	uint8_t *buffer = NULL;
 	size_t buffer_size;
 	uint32_t width;
 	uint32_t height;
@@ -49,6 +49,7 @@ static void do_work(const options_t *options, void *data, size_t filesize) {
 
 		FILE *outf = fopen(options->output, "wb");
 		if (outf == NULL) {
+			free(buffer);
 			perror("fopen");
 			exit(EXIT_FAILURE);
 		}
@@ -70,6 +71,7 @@ static void do_work(const options_t *options, void *data, size_t filesize) {
 		fclose(outf);
 
 		printf("Output file => %s\n  size => %zu bytes\n", options->output, fsize(options->output));
+		free(buffer);
 	}
 }
 
