@@ -39,7 +39,16 @@ static uint8_t* pixel_at(uint8_t *data, uint32_t row, uint32_t col, uint32_t wid
 
 #define PNG_SIG_SIZE 8
 
-bool png_load(const char *filename, uint8_t **out_buffer, size_t *out_buffer_size, uint32_t *out_width, uint32_t *out_height, uint8_t *out_channels, uint32_t *out_padding, uint8_t pad_byte) {
+bool png_load(
+	const char *filename,
+	uint8_t **out_buffer, // must not be NULL
+	size_t *out_buffer_size,
+	uint32_t *out_width,
+	uint32_t *out_height,
+	uint8_t *out_channels,
+	uint32_t *out_padding,
+	uint8_t pad_byte)
+{
 	// Open the file.
 	FILE *fp = fopen(filename, "rb");
 	if (fp == NULL) {
@@ -154,8 +163,8 @@ bool png_load(const char *filename, uint8_t **out_buffer, size_t *out_buffer_siz
 		}
 	}
 
-	if (out_buffer != NULL)
-		*out_buffer = data;
+	*out_buffer = data;
+	
 	if (out_buffer_size != NULL)
 		*out_buffer_size = rowbytes * height - padding;
 	if (out_width != NULL)
